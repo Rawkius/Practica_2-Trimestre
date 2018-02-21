@@ -8,15 +8,18 @@ using System.Threading.Tasks;
 Autor: Raúl Vázquez Ramos
 Fecha creación:      13/02/2018
 Última modificación: 13/02/2018
-Versión: 0.04.3
+Versión: 0.06.0
 ***********************************/
 
 namespace Problema_1
 {
     class Program
     {
+        public static List<Aula> Aulas = new List<Aula>();
+        public static List<Ordenador> Ordenadores = new List<Ordenador>();
         static int posX = 0, posY = 0;
         static string nMenu = string.Empty;
+        static string SN = "S";
 
         static void Main(string[] args)
         {
@@ -87,7 +90,7 @@ namespace Problema_1
                     //();
                     break;
                 case "2":
-                    //();
+                    AulaVer();
                     break;
                 case "3":
                     //();
@@ -99,6 +102,41 @@ namespace Problema_1
                     Menu();
                     break;
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        static void AulaVer()
+        {
+            while (SN.ToUpper() == "S")
+            {
+                Aula a = new Aula();
+                WriteFrameAt(10, 2, 60, 11, true);
+                WriteAt("=== AÑADIR AULAS ===", 24, 3);
+                WriteAt("Identificador (0 ver lista de aulas): ", 12, 5);
+                WriteAt("Nombre: ", 12, 7);
+                a.sId = LeerStoI(50, 5);
+                WriteAt(string.Empty, 20, 7); a.sNombre = Console.ReadLine();
+
+                if (AulaRepId(a.sId) == false && AulaRepNom(a.sNombre) == false)
+                {
+                    Aulas.Add(a);
+                    WriteAt("¡Aula creada correctamente!", 12, 9);
+                }
+                else
+                {
+                    if(AulaRepId(a.sId) == true && AulaRepNom(a.sNombre) == false)
+                        WriteAt("¡Ya existe un aula con ese ID!", 12, 9);
+                    if (AulaRepId(a.sId) == false && AulaRepNom(a.sNombre) == true)
+                        WriteAt("¡Ya existe un aula con ese NOMBRE!", 12, 9);
+                    if (AulaRepId(a.sId) == true && AulaRepNom(a.sNombre) == true)
+                        WriteAt("¡Ya existe un aula con ese ID y ese NOMBRE!", 12, 9);
+                }
+                WriteAt("¿Desea crear más aulas? (S/N): ", 12, 11);
+                SN = Console.ReadLine();
+            }
+            MenuAula();
         }
 
         static void MenuOrdenadores()
@@ -338,6 +376,35 @@ namespace Problema_1
             return Num;
         }
 
+        // Otras Funciones
+
+        static bool AulaRepId(int IdAB)
+        {
+            int IdA;
+            for (int i = 0; i < Aulas.Count; i++)
+            {
+                IdA = Aulas[i].sId;
+                if (IdAB == IdA)
+                    return true;
+            }
+            return false;
+        }
+        
+        static bool AulaRepNom(string NomAB)
+        {
+            string NomA;
+            for (int i = 0; i < Aulas.Count; i++)
+            {
+                NomA = Aulas[i].sNombre;
+                if (NomAB.ToUpper() == NomA.ToUpper())
+                    return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         static void Exit()
         {
             WriteAt("Adioooooooooos", 12, 3);
